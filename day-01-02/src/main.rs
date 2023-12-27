@@ -15,7 +15,8 @@ where
 {
     BufReader::new(handle)
         .lines()
-        .filter_map(|l| value(l.ok()?))
+        .map_while(Result::ok)
+        .filter_map(value)
         .inspect(|v| println!("{:?}", v))
         .sum()
 }
@@ -26,7 +27,7 @@ fn value(line: String) -> Option<u32> {
         .enumerate()
         .filter_map(|c| Some((c.0, c.1.to_digit(10)?)));
 
-    let mut first_digit = iter.nth(0);
+    let mut first_digit = iter.next();
     let mut last_digit = iter.last().or(first_digit);
 
     for (i, value) in DIGITS.iter().enumerate().map(|(i, v)| (i + 1, *v)) {

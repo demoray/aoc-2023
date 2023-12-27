@@ -14,7 +14,8 @@ where
 {
     BufReader::new(handle)
         .lines()
-        .filter_map(|l| card(l.ok()?))
+        .map_while(Result::ok)
+        .filter_map(card)
         .sum()
 }
 
@@ -23,7 +24,7 @@ fn card(line: String) -> Option<usize> {
 
     let winners = game
         .split('|')
-        .nth(0)?
+        .next()?
         .split(' ')
         .filter_map(|x| x.parse::<usize>().ok())
         .collect::<BTreeSet<_>>();
@@ -40,7 +41,7 @@ fn card(line: String) -> Option<usize> {
         println!("line: {line} winners {winners:?} picks {picks:?} no wins");
         None
     } else {
-        Some(1 << wins.len() - 1)
+        Some(1 << (wins.len() - 1))
     }
 }
 

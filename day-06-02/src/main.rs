@@ -38,7 +38,7 @@ where
         //println!("wins: {wins:?} - {}", wins.len());
     }
 
-    let result = win_totals.iter().fold(1, |acc, x| acc * x);
+    let result = win_totals.iter().product::<usize>();
     Some(result)
 }
 

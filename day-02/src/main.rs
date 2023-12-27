@@ -18,7 +18,7 @@ where
 {
     Ok(BufReader::new(handle)
         .lines()
-        .filter_map(|l| l.ok())
+        .map_while(Result::ok)
         .map(|x| parse_game(&x))
         .filter_map(|x| x.ok().flatten())
         .sum())
@@ -27,7 +27,7 @@ where
 fn parse_game(line: &str) -> Result<Option<usize>> {
     let game = line
         .split(':')
-        .nth(0)
+        .next()
         .ok_or_else(|| anyhow!("anyhow before ':'"))?
         .split(' ')
         .nth(1)
@@ -70,7 +70,7 @@ fn check_set(totals: HashMap<&str, usize>) -> bool {
 fn parse_matches(dice: &str) -> Option<HashMap<&str, usize>> {
     let mut sets = HashMap::new();
     for mut entry in dice.split(',').map(|x| x.trim()).map(|x| x.split(' ')) {
-        let count: usize = entry.nth(0).unwrap().parse().unwrap();
+        let count: usize = entry.next().unwrap().parse().unwrap();
         let name = entry.last().unwrap();
         *sets.entry(name).or_insert(0) += count;
     }

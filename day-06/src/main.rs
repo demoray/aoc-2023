@@ -1,8 +1,4 @@
-use std::{
-    collections::BTreeMap,
-    io::{stdin, BufRead, BufReader, Read},
-    ops::Range,
-};
+use std::io::{stdin, BufRead, BufReader, Read};
 
 fn main() {
     let result = run(stdin().lock());
@@ -46,7 +42,7 @@ where
         println!("wins: {wins:?} - {}", wins.len());
     }
 
-    let result = win_totals.iter().fold(1, |acc, x| acc * x);
+    let result = win_totals.iter().product::<usize>();
     Some(result)
 }
 

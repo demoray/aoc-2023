@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::BTreeSet,
     io::{stdin, BufRead, BufReader, Read},
 };
 
@@ -46,7 +46,7 @@ fn card(line: &str) -> Option<usize> {
 
     let winners = game
         .split('|')
-        .nth(0)?
+        .next()?
         .split(' ')
         .filter_map(|x| x.parse::<usize>().ok())
         .collect::<BTreeSet<_>>();

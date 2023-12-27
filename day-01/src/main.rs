@@ -11,13 +11,14 @@ where
 {
     BufReader::new(handle)
         .lines()
-        .filter_map(|l| value(l.ok()?))
+        .map_while(Result::ok)
+        .filter_map(value)
         .sum()
 }
 
 fn value(line: String) -> Option<u32> {
     let mut iter = line.chars().filter_map(|c| c.to_digit(10));
-    let first = iter.nth(0)?;
+    let first = iter.next()?;
     let last = iter.last().unwrap_or(first);
     Some(first * 10 + last)
 }

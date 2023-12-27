@@ -24,7 +24,7 @@ fn get_parts(lines: &[String]) -> Result<Vec<usize>> {
     for (line_number, line) in lines.iter().enumerate() {
         let mut current: Option<(usize, String)> = None;
         for (index, c) in line.chars().enumerate() {
-            if c.is_digit(10) {
+            if c.is_ascii_digit() {
                 if let Some(current) = &mut current {
                     current.1.push(c);
                 } else {
@@ -55,7 +55,7 @@ fn get_parts(lines: &[String]) -> Result<Vec<usize>> {
                 let Some(c) = line.chars().nth(check_offset) else {
                     continue;
                 };
-                if c.is_digit(10) || c == '.' {
+                if c.is_ascii_digit() || c == '.' {
                     continue;
                 }
                 is_part = true;

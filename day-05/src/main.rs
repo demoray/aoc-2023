@@ -4,6 +4,8 @@ use std::{
     ops::Range,
 };
 
+type Maps = BTreeMap<Option<String>, Vec<(Range<usize>, Range<usize>)>>;
+
 const KEYS: &[&str] = &[
     "seed-to-soil map:",
     "soil-to-fertilizer map:",
@@ -37,17 +39,17 @@ where
     println!("seeds {seeds:?}");
 
     let mut current = None;
-    let mut ranges: BTreeMap<Option<String>, Vec<(Range<usize>, Range<usize>)>> = BTreeMap::new();
+    let mut ranges: Maps = BTreeMap::new();
     for line in lines {
         if line.is_empty() {
             continue;
         }
 
-        if line.chars().nth(0)?.is_alphabetic() {
+        if line.chars().next()?.is_alphabetic() {
             // println!("set current");
             current = Some(line);
         } else {
-            let mut values = line
+            let values = line
                 .split(' ')
                 .filter_map(|x| x.parse::<usize>().ok())
                 .collect::<Vec<_>>();
@@ -75,10 +77,7 @@ where
     lowest
 }
 
-fn map_it(
-    seed: usize,
-    maps: &BTreeMap<Option<String>, Vec<(Range<usize>, Range<usize>)>>,
-) -> usize {
+fn map_it(seed: usize, maps: &Maps) -> usize {
     let mut current = seed;
     println!("seed {seed}");
     for entry in KEYS {

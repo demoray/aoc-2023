@@ -1,3 +1,5 @@
+#![allow(clippy::non_canonical_partial_ord_impl)]
+
 use std::{
     cmp::Ordering,
     io::{stdin, BufRead, BufReader, Read},
@@ -101,7 +103,7 @@ impl Kind {
         let kind = match counts.as_slice() {
             [(a, 5)] => Kind::Five(*a),
             [(a, 4), (_, 1)] => Kind::Four(*a),
-            [(a, 3), (b, 2)] => Kind::Full(a.clone(), b.clone()),
+            [(a, 3), (b, 2)] => Kind::Full(*a, *b),
             [(a, 3), (_, 1), (_, 1)] => Kind::Three(*a),
             [(a, 2), (b, 2), (_, 1)] => Kind::TwoPair(*a, *b),
             [(a, 2), (_, 1), (_, 1), (_, 1)] => Kind::Pair(*a),
@@ -126,8 +128,8 @@ struct Hand {
 
 impl PartialOrd for Hand {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        let a: BaseKind = self.hand.into();
-        let b: BaseKind = other.hand.into();
+        let a: BaseKind = self.hand;
+        let b: BaseKind = other.hand;
         println!("AA a: {a:?} - b: {b:?} {:?}", a.cmp(&b));
 
         match a.cmp(&b) {
@@ -139,8 +141,8 @@ impl PartialOrd for Hand {
 
 impl Ord for Hand {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        let a: BaseKind = self.hand.into();
-        let b: BaseKind = other.hand.into();
+        let a: BaseKind = self.hand;
+        let b: BaseKind = other.hand;
 
         println!(
             "BB a: {a:?} - b: {b:?} {:?} {:?} {:?} {:?}",

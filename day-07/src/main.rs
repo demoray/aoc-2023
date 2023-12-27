@@ -1,3 +1,5 @@
+#![allow(clippy::non_canonical_partial_ord_impl)]
+
 use std::{
     cmp::Ordering,
     io::{stdin, BufRead, BufReader, Read},
@@ -77,7 +79,7 @@ impl Kind {
         match counts.as_slice() {
             [(a, 5)] => Kind::Five(*a),
             [(a, 4), (_, 1)] => Kind::Four(*a),
-            [(a, 3), (b, 2)] => Kind::Full(a.clone(), b.clone()),
+            [(a, 3), (b, 2)] => Kind::Full(*a, *b),
             [(a, 3), (_, 1), (_, 1)] => Kind::Three(*a),
             [(a, 2), (b, 2), (_, 1)] => Kind::TwoPair(*a, *b),
             [(a, 2), (_, 1), (_, 1), (_, 1)] => Kind::Pair(*a),
